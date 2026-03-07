@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoysAkuma</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Global Styles & Sketchy Theme --- */
+        :root {
+            --primary-font: 'Press Start 2P', cursive;
+            --secondary-font: 'Arial', sans-serif; /* Fallback for less critical text */
+            --text-color: #000000; /* Black text */
+            --background-color: #f0f0f0; /* Light grey background */
+            --primary-accent: #3498db; /* A blue accent */
+            --secondary-accent: #e74c3c; /* A red accent */
+            --border-color: #555555; /* Dark grey for sketch borders */
+            --code-bg-color: #282c34; /* Dark background for code snippets */
+            --code-text-color: #abb2bf; /* Light text for code */
+        }
+
+        body {
+            font-family: var(--primary-font);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            scroll-behavior: smooth; /* Smooth scrolling for navigation */
+            text-rendering: optimizeSpeed; /* Helps with pixel font rendering */
+            font-size: 14px; /* Base font size for 8-bit style */
+        }
+
+        /* General Sketchy Border Effect */
+        .sketchy-border {
+            border: 2px solid var(--border-color);
+            box-shadow: 5px 5px 0px var(--border-color); /* "Hand-drawn" offset */
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #ffffff; /* White background for content boxes */
+            position: relative; /* For pseudo-elements if needed */
+        }
+
+        /* Ensure no text-shadow for sharp pixelated look */
+        h1, h2, h3, p, a, li, button, span {
+            text-shadow: none;
+        }
+
+        /* --- Navigation Bar --- */
+        #navbar {
+            background-color: var(--code-bg-color); /* Dark, like old console output */
+            color: var(--code-text-color);
+            padding: 10px 0;
+            position: sticky; /* Stays at the top */
+            top: 0;
+            z-index: 1000; /* Ensures it stays above other content */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Subtle shadow */
+            text-align: center;
+        }
+
+        #navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* Arrange items horizontally */
+            justify-content: center; /* Center the nav items */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        #navbar li {
+            margin: 0 15px; /* Space between nav items */
+        }
+
+        #navbar a {
+            color: var(--code-text-color);
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: var(--secondary-font); /* Use fallback for nav */
+            font-size: 12px; /* Smaller nav font */
+            border: 1px dashed var(--border-color); /* Sketchy border for links */
+        }
+
+        #navbar a:hover,
+        #navbar a.active { /* Style for active link if you implement Vue routing */
+            background-color: var(--primary-accent);
+            color: white;
+            border-color: var(--primary-accent);
+        }
+
+        /* --- Section Styling --- */
+        .section {
+            padding: 60px 20px; /* Top/bottom padding, left/right padding */
+            min-height: 80vh; /* Minimum height to make scrolling visible */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically in each section */
+            align-items: center; /* Center content horizontally */
+            text-align: center;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        .section h2 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: var(--primary-accent);
+            border-bottom: 3px dashed var(--border-color);
+            padding-bottom: 10px;
+            display: inline-block; /* To fit border below text */
+        }
+
+        /* Specific Section Styles */
+        #about {
+            background-color: #e3f2fd; /* Light blue */
+            box-shadow: inset 0 0 20px rgba(135, 206, 250, 0.3); /* Subtle inner shadow */
+        }
+
+        #projects {
+            background-color: #fff3e0; /* Light orange */
+            box-shadow: inset 0 0 20px rgba(255, 193, 7, 0.3);
+        }
+
+        #experience {
+            background-color: #e8f5e9; /* Light green */
+            box-shadow: inset 0 0 20px rgba(144, 238, 144, 0.3);
+        }
+
+        #contact {
+            background-color: #f3e5f5; /* Light purple */
+            box-shadow: inset 0 0 20px rgba(218, 112, 214, 0.3);
+        }
+
+        /* --- Content Styling --- */
+        .content-wrapper {
+            max-width: 900px; /* Max width for content */
+            margin: 0 auto; /* Center the wrapper */
+            text-align: left; /* Align text left within content blocks */
+        }
+
+        .content-wrapper p {
+            font-family: var(--secondary-font); /* Use fallback for body text */
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .content-wrapper h3 {
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: var(--secondary-accent);
+            font-family: var(--primary-font); /* Keep headings pixelated */
+        }
+
+        .content-wrapper ul {
+            list-style: disc; /* Bullet points */
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .content-wrapper li {
+            margin-bottom: 10px;
+            font-family: var(--secondary-font);
+        }
+
+        /* Project Card Styling */
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes content to top, buttons to bottom */
+            border: 2px dashed var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            padding: 15px;
+            background-color: white;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            text-align: center; /* Center content inside card */
+            font-family: var(--secondary-font); /* Use fallback for project details */
+            font-size: 15px;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 0px var(--border-color);
+        }
+
+        .project-card h4 {
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--primary-accent);
+            font-family: var(--primary-font);
+        }
+
+        .project-card p {
+            margin-bottom: 15px;
+            flex-grow: 1; /* Allows description to take available space */
+        }
+
+        .project-card .tech-stack {
+            font-style: italic;
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .project-card .project-links {
+            margin-top: auto; /* Pushes buttons to the bottom */
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .project-card a.btn {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: var(--primary-accent);
+            color: white;
+            text-decoration: none;
+            border: 1px dashed var(--primary-accent);
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+            font-size: 12px;
+            font-family: var(--secondary-font);
+            cursor: pointer; /* Indicate it's clickable */
+        }
+
+        .project-card a.btn:hover {
+            background-color: var(--secondary-accent);
+            color: white;
+            border-color: var(--secondary-accent);
+            transform: translateY(-2px);
+        }
+
+
+        /* Experience Item Styling */
+        .experience-item {
+            margin-bottom: 30px;
+            border-left: 3px solid var(--primary-accent);
+            padding-left: 20px;
+            text-align: left;
+            font-family: var(--secondary-font);
+            font-size: 15px;
+        }
+
+        .experience-item h3 {
+            margin-bottom: 5px;
+            color: var(--primary-accent);
+            font-family: var(--primary-font);
+        }
+
+        .experience-item h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #555;
+            font-family: var(--primary-font);
+        }
+
+        .experience-item p {
+            margin-bottom: 0;
+        }
+
+        /* Contact Info Styling */
+        .contact-info a {
+            color: var(--primary-accent);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+            font-family: var(--secondary-font);
+        }
+
+        .contact-info a:hover {
+            color: var(--secondary-accent);
+        }
+
+        .contact-info .social-icon {
+            font-size: 2em; /* Larger icons */
+            vertical-align: middle;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .section {
+                padding: 40px 15px;
+                min-height: 70vh;
+            }
+            #navbar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            #navbar li {
+                margin: 5px 0;
+            }
+            .sketchy-border {
+                padding: 10px;
+                margin: 15px 0;
+            }
+            .content-wrapper p, .content-wrapper li {
+                font-size: 14px;
+            }
+            .experience-item {
+                padding-left: 15px;
+            }
+        }
+
+        /* Minimalistic 8-bit button style for general use */
+        .btn-8bit {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--primary-accent);
+            color: white !important; /* Override other link styles */
+            text-decoration: none;
+            border: 2px dashed var(--border-color); /* Sketchy outline */
+            box-shadow: 3px 3px 0px var(--border-color);
+            font-family: var(--primary-font); /* Use pixel font */
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            user-select: none; /* Prevent text selection on click */
+        }
+
+        .btn-8bit:hover {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+            background-color: var(--secondary-accent); /* Change color on hover */
+        }
+         .btn-8bit:active {
+            transform: translate(3px, 3px);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Vue.js CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!-- Navigation Bar -->
+    <nav id="navbar">
+        <ul>
+            <li><a href="#about">About me</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div id="app">
+        <!-- About Me Section -->
+        <section id="about" class="section">
+            <div class="content-wrapper">
+                <h2>About Me</h2>
+                <p>
+                    Hey there! I'm MoysAkuma, a passionate software developer who specializes in creating engaging, user-friendly solutions for real-world problems.
+                    I thrive on transforming complex ideas into functional systems, designing enterprise-level architectures, and leveraging cutting-edge technologies to deliver impactful results.
+                    My journey in development began with a fascination for video games, which ignited my curiosity about problem-solving and creating meaningful user experiences.
+                </p>
+                <p>
+                    I love working with modern frameworks like Vue.js and React to build dynamic, responsive applications, always prioritizing performance, accessibility, and scalability.
+                    Beyond the code, I'm an advocate for clean architecture and API-led design patterns, which I apply to create maintainable and future-proof solutions.
+                    When I'm not coding, you'll find me exploring indie games, experimenting with new tech stacks, or sketching out innovative ideas for my next project.
+                </p>
+                <a href="CV-EN.pdf" download class="btn-8bit">Download Resume [EN]</a>
+				<a href="CV-ES.pdf" download class="btn-8bit">Download Resume [ES]</a>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="content-wrapper">
+                <h2>My Projects</h2>
+                <div class="project-list">
+                    <div class="project-card">
+                        <h4>Adondevamos</h4>
+                        <p>A mobile-first web application to share your trips with friends to decide destinations on vacation.</p>
+                        <div class="tech-stack">Tech: React, Express, Supabase, Redis</div>
+                        <div class="project-links">
+                            <a href="https://adondevamos.net" target="_blank" class="btn">Live</a>
+                            <a href="https://github.com/MoysAkuma/Adondevamos.web" target="_blank" class="btn">Front-end GitHub Repo</a>
+							<a href="https://github.com/MoysAkuma/Adondevamosback" target="_blank" class="btn">Back-end GitHub Repo</a>
+                            <a href="https://docs.google.com/document/d/e/2PACX-1vQGqD9jbFO617hh1bdbXlnDqwXvIw303QV3rQQmH0jJgTeWNLc9yw7e2UOE_82EfEs3CWGy0_8Jcoup/pub" target="_blank" class="btn">Documentation</a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h4>Cita.me</h4>
+                        <p>A platform to find local providers of services, book appointments and help providers to manage their appointments.</p>
+                        <div class="tech-stack">Tech: React, Android Studio, Google Cloud, TBD</div>
+                        <div class="project-links">
+                            <a href="https://docs.google.com/document/d/e/2PACX-1vSrWxwpwvJSch1e7vAorX_RVL5nPDPCtkdoSV1DtJHcwEcIDU4UrWrPZ5zAAL6CI1nl2Y1KEaAt1bRC/pub" target="_blank" class="btn">Documentation</a>
+                            <a href="https://github.com/MoysAkuma/Cita.me.web" target="_blank" class="btn">GitHub Repo</a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h4>Viaje al mictlan</h4>
+                        <p>A short videogame that recreate journey that mexicans came across to react after life.</p>
+                        <div class="tech-stack">Tech: TBD</div>
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/project-gamma-api" target="_blank" class="btn">GitHub Repo</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h4>Quien fue</h4>
+                        <p>A videogame that shows two celebrities and their quotes.</p>
+                        <div class="tech-stack">Tech: TBD</div>
+                        <div class="project-links">
+                            <a href="https://drive.google.com/file/d/177XfkL_ismDNmRHWg_IF9ikFN2m_w1bf/view?usp=drive_link" target="_blank" class="btn">Documentation</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Experience Section -->
+        <section id="experience" class="section">
+            <div class="content-wrapper">
+                <h2>Professional Experience</h2>
+                <div class="experience-item">
+                    <h3>Arquitecto de software</h3>
+                    <h4>Coppel SA de CV | 2023 - Present</h4>
+                    <p><b>Enterprise Architecture:</b> Spearheaded the implementation of BIAN (Banking Industry Architecture Network) standards, significantly improving system interoperability and regulatory compliance across the organization.</p>
+
+                    <p><b>API Governance:</b> Engineered API-led connectivity strategies using MuleSoft and Apigee, streamlining core banking operations and reducing integration friction.</p>
+
+                    <p><b>Leadership:</b> Directed senior development teams, providing technical mentorship on DevOps best practices, CI/CD pipelines, and Shift-Left testing methodologies.</p>
+
+                    <p><b>Documentation & Design:</b> Authored comprehensive architectural blueprints (DTMs, DSPs, Test Matrices) and MIRRO artifacts to ensure high-fidelity system design and maintainability.</p>
+                </div>
+                <div class="experience-item">
+                    <h3>Web Developer</h3>
+                    <h4>Azzule Systems | 2019 - 2023</h4>
+                    <p><b>Full-Stack Development:</b> Developed and maintained responsive SaaS web applications using ASP.NET MVC and Vue.js, ensuring high performance for supply chain management clients.</p>
+                    <p><b>Legacy Modernization:</b> Managed and optimized critical legacy services in Visual Basic 6.0, ensuring business continuity while migrating components to modern stacks.</p>
+                    <p><b>Agile Delivery:</b> Played a key role in Scrum-based development cycles, implementing rigorous testing strategies and technical documentation to improve code quality and deployment speed.</p>
+                </div>
+                <div class="experience-item">
+                    <h3>Programador Jr</h3>
+                    <h4>Coppel SA de SV | 2018 - 2019</h4>
+                    <h4>Ergosistemas Integrales SA de SV | 2017 - 2018</h4>
+                    <p><b>Public Sector Solutions:</b> Built GIS-integrated web applications for government park management and vehicle tracking using PHP, JQuery, and the Google Maps API.</p>
+                    <p><b>Mobile & Cross-Platform:</b> Developed Android mobile applications (Java) and cross-platform PDA tools (C#), integrating RESTful APIs to support field-based data collection.</p>
+                    <p><b>Database Design:</b> Designed and optimized relational and NoSQL databases (PostgreSQL, MySQL, MongoDB) to handle varied data structures for diverse client projects.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Information Section -->
+        <section id="contact" class="section">
+            <div class="content-wrapper">
+                <h2>Contact Information</h2>
+                <div class="contact-info">
+                    <p>
+                        <a href="mailto:moises.moran.dev@gmail.com">
+                            <i class="fas fa-envelope social-icon"></i> moises.moran.dev@gmail.com
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://github.com/moysakuma" target="_blank">
+                            <i class="fab fa-github social-icon"></i> @moysakuma
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://www.linkedin.com/in/moysakuma/" target="_blank">
+                            <i class="fab fa-linkedin social-icon"></i> MoysAkuma
+                        </a>
+                    </p>
+                    
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Font Awesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script>
+        // Vue.js App Logic
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    
+                };
+            },
+            mounted() {
+
+                // Highlight active nav link on scroll
+                const sections = document.querySelectorAll('.section');
+                const navLinks = document.querySelectorAll('#navbar a');
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            const id = entry.target.getAttribute('id');
+                            const navLink = document.querySelector(`#navbar a[href="#${id}"]`);
+                            if (navLink) {
+                                if (entry.isIntersecting) {
+                                    navLink.classList.add('active');
+                                } else {
+                                    navLink.classList.remove('active');
+                                }
+                            }
+                        });
+                    },
+                    { threshold: 0.6 } 
+                );
+
+                sections.forEach((section) => {
+                    observer.observe(section);
+                });
+            }
+        }).mount('#app');
+    </script>
+
+</body>
+</html>
