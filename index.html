@@ -382,7 +382,7 @@
                     <div class="project-card">
                         <h4>Adondevamos</h4>
                         <p>A mobile-first web application to share your trips with friends to decide destinations on vacation.</p>
-                        <div class="tech-stack">Tech: React, Express, Supabase</div>
+                        <div class="tech-stack">Tech: React, Express, Supabase, Redis</div>
                         <div class="project-links">
                             <a href="https://adondevamos.net" target="_blank" class="btn">Live</a>
                             <a href="https://github.com/MoysAkuma/Adondevamos.web" target="_blank" class="btn">Front-end GitHub Repo</a>
@@ -402,7 +402,7 @@
                     <div class="project-card">
                         <h4>Viaje al mictlan</h4>
                         <p>A short videogame that recreate journey that mexicans came across to react after life.</p>
-                        <div class="tech-stack">Tech: Godot</div>
+                        <div class="tech-stack">Tech: TBD</div>
                         <div class="project-links">
                             <a href="https://github.com/yourusername/project-gamma-api" target="_blank" class="btn">GitHub Repo</a>
                         </div>
@@ -411,7 +411,7 @@
                     <div class="project-card">
                         <h4>Quien fue</h4>
                         <p>A videogame that shows two celebrities and their quotes.</p>
-                        <div class="tech-stack">Tech: TDB</div>
+                        <div class="tech-stack">Tech: TBD</div>
                         <div class="project-links">
                             <a href="https://drive.google.com/file/d/177XfkL_ismDNmRHWg_IF9ikFN2m_w1bf/view?usp=drive_link" target="_blank" class="btn">Documentation</a>
                         </div>
@@ -489,13 +489,10 @@
         createApp({
             data() {
                 return {
-                    // You can add reactive data here if needed, e.g., for dynamic content
-                    // For this simple portfolio, we might not need much dynamic data
+                    
                 };
             },
             mounted() {
-                // Optional: Add any JavaScript logic to run after the app is mounted
-                console.log('Portfolio site loaded with Vue.js!');
 
                 // Highlight active nav link on scroll
                 const sections = document.querySelectorAll('.section');
@@ -515,7 +512,7 @@
                             }
                         });
                     },
-                    { threshold: 0.6 } // Trigger when 60% of the section is visible
+                    { threshold: 0.6 } 
                 );
 
                 sections.forEach((section) => {
